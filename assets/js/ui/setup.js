@@ -51,9 +51,9 @@ export function renderSetup(root) {
         el('button', { class: 'signin-override-save', type: 'button', onClick: saveOverride }, 'Save'),
       ),
       el('div', { class: 'signin-hint' },
-        'Default is the author\'s client. Replace with yours if you\'ve forked. JS origin: ',
+        'Default is the author\'s client. Replace with yours if you\'ve forked. Required JavaScript origin: ',
         el('code', {}, window.location.origin),
-        ', redirect: ', el('code', {}, window.location.origin + window.location.pathname),
+        '. (No redirect URI needed — we use Google Identity Services.)',
       ),
     ),
   );
