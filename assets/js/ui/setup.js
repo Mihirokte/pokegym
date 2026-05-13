@@ -4,6 +4,7 @@
 import { el, haptic } from '../util.js';
 import { getClientId, setClientId } from '../storage.js';
 import { signIn } from '../auth.js';
+import { enterDemo } from '../demo.js';
 
 export function renderSetup(root) {
   root.innerHTML = '';
@@ -11,6 +12,14 @@ export function renderSetup(root) {
     el('img', { class: 'setup-logo', src: 'assets/sprites/items/poke.png', alt: '' }),
     el('h1', { class: 'setup-title' }, 'PokéGym'),
     el('p', { class: 'setup-sub' }, 'Track your gym sessions. Evolve your team. Earn badges.'),
+
+    el('div', { class: 'demo-block' },
+      el('button', { class: 'demo-btn', type: 'button', onClick: tryDemo },
+        el('span', { class: 'demo-label' }, '▶  Try the demo'),
+        el('span', { class: 'demo-hint' }, 'Full UI · sample data · no account needed'),
+      ),
+      el('div', { class: 'demo-divider' }, el('span', {}, 'or set up for real')),
+    ),
 
     el('div', { class: 'setup-steps' },
       stepItem(1, 'Create a Google Cloud OAuth Client', [
@@ -84,4 +93,13 @@ function saveAndSignIn() {
   try { signIn(); } catch (e) {
     console.error(e);
   }
+}
+
+function tryDemo() {
+  haptic([10, 30, 10]);
+  enterDemo();
+  // Kick a render — app.js listens on auth changes, not a custom event. Easiest
+  // is a hard reload so the mirror + routes re-initialise cleanly.
+  location.hash = '#session';
+  location.reload();
 }

@@ -105,7 +105,8 @@ export function scheduleFlush(delay = 300) {
 export async function flush() {
   if (flushing) return;
   if (!online) return;
-  const { isSignedIn, spreadsheetId } = getAuth();
+  const { isSignedIn, spreadsheetId, isDemo } = getAuth();
+  if (isDemo) return; // Demo mode — never touch the network
   if (!isSignedIn || !spreadsheetId) return;
 
   flushing = true; notify();
@@ -147,7 +148,8 @@ export async function flush() {
 
 // ── Pull from Sheet → mirror ──────────────────────────────────────────────
 export async function pullAll() {
-  const { isSignedIn, spreadsheetId } = getAuth();
+  const { isSignedIn, spreadsheetId, isDemo } = getAuth();
+  if (isDemo) { notify(); return; }
   if (!isSignedIn || !spreadsheetId) return;
   for (const name of SHEET_NAMES) {
     try {
@@ -167,6 +169,8 @@ export async function pullAll() {
  * if empty.
  */
 export async function bootstrap() {
+  const { isDemo } = getAuth();
+  if (isDemo) return; // Demo already has a seeded mirror.
   await Sheets.ensureSpreadsheet();
   await pullAll();
   const team = mirrorSheet('TeamState');

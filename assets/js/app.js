@@ -5,6 +5,7 @@ import { el, qs, haptic } from './util.js';
 import { getAuth, handleRedirect, signIn, signOut, onAuthChange } from './auth.js';
 import { bootstrap, pullAll, onSyncChange, status as syncStatus, flush } from './sync.js';
 import { getClientId } from './storage.js';
+import { isDemo, exitDemo } from './demo.js';
 
 import { renderSetup } from './ui/setup.js';
 import { renderSessions } from './ui/session.js';
@@ -43,6 +44,7 @@ function ensureShell() {
     el('div', { class: 'brand' },
       el('img', { src: 'assets/sprites/items/poke.png', alt: '' }),
       el('span', {}, 'PokéGym'),
+      el('span', { class: 'demo-pill', id: 'demo-pill' }, 'DEMO'),
     ),
     el('div', { class: 'top-right' },
       el('span', { class: 'sync-dot', id: 'sync-dot', title: 'Sync status' }),
@@ -94,12 +96,21 @@ function updateNav() {
   const key = currentRoute();
   qs('.bottomnav')?.classList.toggle('hidden', !(auth.hasClientId && auth.isSignedIn));
   qs('.topbar')?.classList.toggle('hidden', !(auth.hasClientId && auth.isSignedIn));
+  qs('#demo-pill')?.classList.toggle('visible', !!auth.isDemo);
   document.querySelectorAll('.navitem').forEach(a => {
     a.classList.toggle('active', a.dataset.route === key);
   });
 }
 
 async function onSignOut() {
+  const auth = getAuth();
+  if (auth.isDemo) {
+    if (!confirm('Exit demo? Sample data will be cleared.')) return;
+    exitDemo();
+    location.hash = '';
+    location.reload();
+    return;
+  }
   if (!confirm('Sign out? Your data stays in Google Sheets.')) return;
   signOut();
   render();

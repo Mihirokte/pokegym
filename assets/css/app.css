@@ -450,3 +450,34 @@ input[type=number], input[type=text], input[type=search], select { font-size: 16
 @media (min-width: 768px) {
   .page { max-width: 720px; margin: 0 auto; }
 }
+
+/* ── Demo button on setup screen ─────────────────────────────────────── */
+.demo-block { margin: 20px 0 8px; }
+.demo-btn {
+  width: 100%; padding: 18px 16px; border-radius: 14px;
+  background: linear-gradient(135deg, #EF4444, #B91C1C);
+  color: #fff; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  box-shadow: 0 6px 20px rgba(239,68,68,.35), 0 1px 0 rgba(255,255,255,.15) inset;
+  border: 2px solid rgba(255,255,255,.1);
+  transition: transform .08s;
+}
+.demo-btn:active { transform: scale(.98); }
+.demo-label { font-family: var(--pixel); font-size: 12px; letter-spacing: 2px; }
+.demo-hint { font-size: 11px; opacity: .85; letter-spacing: .5px; }
+.demo-divider {
+  display: flex; align-items: center; gap: 10px; margin: 18px 0 0;
+  color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+}
+.demo-divider::before, .demo-divider::after {
+  content: ''; flex: 1; height: 1px; background: var(--line);
+}
+
+/* Demo pill in topbar */
+.demo-pill {
+  display: none;
+  font-family: var(--pixel); font-size: 8px; letter-spacing: 1px;
+  padding: 3px 6px; background: var(--err); color: #fff;
+  border-radius: 4px; margin-left: 4px;
+}
+.demo-pill.visible { display: inline-block; }
+
