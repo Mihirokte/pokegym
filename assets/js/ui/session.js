@@ -154,7 +154,14 @@ function renderExerciseCard(day, section, ex, draft) {
   const sets = draft.sets[key] ||= initSets(ex);
   const allDone = sets.every(s => s.done);
 
-  const card = el('div', { class: `ex-card ${allDone ? 'done' : ''}`, style: { '--c': day.color } });
+  const card = el('div', {
+    class: `ex-card ${allDone ? 'done' : ''}`,
+    style: { '--c': day.color },
+    dataset: { exId: ex.id, section: section.key },
+  });
+  // Stash the full exercise + section for the batch toggle path below.
+  card._ex = ex;
+  card._section = section;
 
   const head = el('div', { class: 'ex-head' },
     el('button', { class: `ex-check ${allDone ? 'checked' : ''}`, type: 'button', onClick: () => toggleAll(sets, card, day, section) }),
@@ -295,22 +302,10 @@ function recomputeSectionCount(card) {
 }
 
 function exerciseFromCardElement(card) {
-  // Best-effort reverse lookup by exercise-name text.
-  const name = card.querySelector('.ex-name')?.textContent || '';
-  const all = mirrorSheet('CustomExercises');
-  // Defer to imported getExercise via master map + custom
-  const custom = Object.fromEntries(all.map(x => [x.id, x]));
-  // Attempt name match — not reliable but only used on toggleAll fallback.
-  // Better to keep a dataset attribute — handled below.
-  return card._ex || {
-    id: card.dataset.exId || '',
-    name,
-    section: card.dataset.section || 'workout',
-    isTime: false,
-    trackLoad: true,
-  };
+  return card._ex || null;
 }
 function sectionFromCardElement(card) {
+  if (card._section) return card._section;
   const key = card.closest('.sec')?.className.match(/sec-(\w+)/)?.[1] || 'workout';
   return { key, label: key };
 }
