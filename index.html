@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>PokéGym</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#09090B" />
+  <meta name="description" content="Pokémon-themed gym tracker. Train, evolve, earn badges. Offline-first PWA." />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PokéGym" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Fonts: system sans body, Dogica pixel for headings -->
+  <style>
+    @font-face { font-family: 'Dogica'; src: url('assets/fonts/dogica.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Dogica'; src: url('assets/fonts/dogicabold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+  </style>
+
+  <link rel="stylesheet" href="assets/css/app.css" />
+
+  <!-- Preload key sprites used on first paint -->
+  <link rel="preload" as="image" href="assets/sprites/items/poke.png" />
+
+  <!-- No-JS fallback -->
+  <noscript><style>.noscript{padding:24px;font-family:system-ui;color:#fff;background:#111;position:fixed;inset:0;z-index:9999}</style>
+  <div class="noscript"><h1>PokéGym needs JavaScript</h1><p>Enable JS to use the tracker.</p></div></noscript>
+</head>
+<body>
+  <div id="app" class="app-root">
+    <div class="boot-splash">
+      <img src="assets/sprites/items/poke.png" alt="" class="boot-ball" />
+      <div class="boot-text">Loading PokéGym…</div>
+    </div>
+  </div>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

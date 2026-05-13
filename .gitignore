@@ -1,0 +1,24 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Node (not used by the app, but in case we add tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.env
+.env.local
+
+# Build artifacts (we don't build, but defensively)
+dist/
+build/
+
+# Logs
+*.log
