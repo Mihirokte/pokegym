@@ -21,6 +21,13 @@ export const APP = {
 // Bump this when we add/change scopes so stale tokens are refreshed.
 export const SCOPES_VERSION = 1;
 
+// Public OAuth Client ID — authorized for https://mihirokte.github.io/pokegym/
+// and http://localhost:8080/pokegym/. Client IDs are not secrets; they're
+// effectively public identifiers that pair with the authorized-origins list
+// configured in Google Cloud. If you're forking, override in localStorage
+// (`pokegym.clientId`) or replace this value.
+export const BAKED_CLIENT_ID = '455801119193-lb6dehdta0ctc701gqnflgq8mtti81ct.apps.googleusercontent.com';
+
 export const SCOPES = [
   'openid',
   'email',

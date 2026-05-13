@@ -213,83 +213,111 @@ img.pixel, .mon-sprite, .stage-sprite, .head-stage-sprite, .badge-sprite, .pb-mo
 .nav-ico svg { width: 100%; height: 100%; }
 .nav-label { font-size: 9px; font-weight: 700; letter-spacing: 1.1px; }
 
-/* ── Setup screen ──────────────────────────────────────────────────────── */
-.setup-card {
-  max-width: 540px;
-  margin: var(--s-7) auto;
-  padding: var(--s-8) var(--s-6) var(--s-7);
+/* ── Sign-in card ──────────────────────────────────────────────────────── */
+.signin-card {
+  max-width: 440px;
+  margin: var(--s-9) auto var(--s-7);
+  padding: var(--s-8) var(--s-6) var(--s-6);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--r-5);
   box-shadow: var(--e-3);
   text-align: center;
 }
-.setup-logo {
+.signin-hero { margin-bottom: var(--s-6); }
+.signin-ball {
   width: 64px; height: 64px;
-  filter: drop-shadow(0 6px 18px rgba(184,92,61,.4));
+  filter: drop-shadow(0 8px 20px rgba(184,92,61,.4));
   animation: bootBob 3.5s var(--ease-out) infinite;
 }
-.setup-title {
+.signin-title {
   font-family: var(--font-pixel);
-  font-size: 16px;
-  letter-spacing: var(--kbd-tracking);
-  margin: var(--s-4) 0 var(--s-2);
+  font-size: 16px; letter-spacing: var(--kbd-tracking);
   color: var(--text);
+  margin: var(--s-4) 0 var(--s-2);
 }
-.setup-sub {
+.signin-sub {
   color: var(--text-muted);
-  margin: 0 0 var(--s-6);
-  font-size: 14px;
-  line-height: 1.5;
-  max-width: 32ch;
-  margin-inline: auto;
+  font-size: 14px; line-height: 1.5;
+  margin: 0; max-width: 30ch; margin-inline: auto;
 }
 
-.setup-steps { text-align: left; display: flex; flex-direction: column; gap: var(--s-2); margin: var(--s-5) 0; }
-.setup-step {
-  display: flex; gap: var(--s-4);
-  padding: var(--s-4) var(--s-5);
-  background: var(--surface-2);
-  border: 1px solid var(--line);
+.signin-btn {
+  display: flex; align-items: center; justify-content: center; gap: var(--s-3);
+  width: 100%; padding: var(--s-4) var(--s-5);
+  background: var(--text);
+  color: #202124; font-size: 14px; font-weight: 600;
+  letter-spacing: -0.01em;
   border-radius: var(--r-3);
+  transition: transform 80ms, box-shadow var(--t-base), background var(--t-fast);
+  box-shadow: 0 8px 24px rgba(242,236,220,.12), 0 1px 0 rgba(255,255,255,.2) inset;
 }
-.step-num {
-  flex-shrink: 0;
-  width: 28px; height: 28px; border-radius: var(--r-2);
-  background: var(--honey); color: var(--ink);
-  font-weight: 800; display: grid; place-items: center;
-  font-family: var(--font-pixel); font-size: 10px;
-}
-.step-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--text); }
-.step-content { color: var(--text-muted); font-size: 13px; line-height: 1.55; }
-.step-content code {
-  background: #000; padding: 2px 6px; border-radius: var(--r-1);
-  font-family: var(--font-mono); font-size: 11.5px;
-  color: var(--honey); word-break: break-all;
-}
+.signin-btn:hover { transform: translateY(-1px); background: #fff; box-shadow: 0 12px 28px rgba(242,236,220,.18), 0 1px 0 rgba(255,255,255,.2) inset; }
+.signin-btn:active { transform: translateY(1px); box-shadow: 0 4px 12px rgba(242,236,220,.12); }
+.google-g { width: 18px; height: 18px; flex-shrink: 0; }
 
-.setup-input { display: flex; gap: var(--s-2); margin: var(--s-5) 0 var(--s-2); }
-.setup-input input {
+.signin-trust {
+  list-style: none; padding: 0;
+  margin: var(--s-5) 0 var(--s-5);
+  display: flex; flex-direction: column; gap: var(--s-2);
+  text-align: left;
+}
+.signin-trust li {
+  font-size: 12px; color: var(--text-muted);
+  padding-left: var(--s-2);
+}
+.signin-trust li::marker { color: var(--sage); }
+
+.signin-advanced {
+  margin-top: var(--s-4);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  text-align: left;
+}
+.signin-advanced summary {
+  font-family: var(--font-pixel); font-size: 8px;
+  letter-spacing: var(--kbd-tracking);
+  color: var(--text-dim); cursor: pointer;
+  list-style: none; text-transform: uppercase;
+  transition: color var(--t-fast);
+  padding: var(--s-2);
+  text-align: center;
+}
+.signin-advanced summary:hover { color: var(--text-muted); }
+.signin-advanced summary::-webkit-details-marker { display: none; }
+.signin-advanced[open] summary { color: var(--text-muted); }
+
+.signin-override {
+  display: flex; gap: var(--s-2);
+  margin: var(--s-3) 0 var(--s-2);
+}
+.signin-override input {
   flex: 1;
-  padding: var(--s-4) var(--s-4);
-  background: #000; border: 1px solid var(--line); border-radius: var(--r-3);
-  color: var(--text); font-family: var(--font-mono); font-size: 12.5px; font-weight: 500;
+  padding: var(--s-3);
+  background: #000; border: 1px solid var(--line); border-radius: var(--r-2);
+  color: var(--text); font-family: var(--font-mono); font-size: 11.5px;
   transition: border-color var(--t-fast);
 }
-.setup-input input:focus { outline: none; border-color: var(--honey); }
-.setup-input input.error { border-color: var(--wine); animation: shake 260ms; }
-.setup-input button.primary {
-  padding: var(--s-4) var(--s-5);
-  background: var(--honey); color: var(--ink);
-  font-weight: 700; border-radius: var(--r-3);
-  white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(212,165,116,.25), 0 1px 0 rgba(255,255,255,.15) inset;
-  transition: transform 80ms, box-shadow var(--t-base);
+.signin-override input:focus { outline: none; border-color: var(--honey); }
+.signin-override input.error { border-color: var(--wine); animation: shake 260ms; }
+.signin-override-save {
+  padding: var(--s-3) var(--s-4);
+  background: var(--surface-3);
+  border: 1px solid var(--line-2);
+  color: var(--text); font-size: 12px; font-weight: 600;
+  border-radius: var(--r-2);
+  transition: all var(--t-fast);
 }
-.setup-input button.primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(212,165,116,.32); }
-.setup-input button.primary:active { transform: translateY(1px); }
-.setup-note { color: var(--text-dim); font-size: 12px; margin-top: var(--s-3); line-height: 1.5; }
-.setup-note a { color: var(--text-muted); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.signin-override-save:hover { background: var(--line); border-color: var(--line-strong); }
+.signin-hint {
+  font-size: 11px; color: var(--text-dim);
+  line-height: 1.6;
+}
+.signin-hint code {
+  font-family: var(--font-mono); font-size: 10.5px;
+  background: #000; padding: 1px 5px; border-radius: 3px;
+  color: var(--honey); word-break: break-all;
+}
 @keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
 
 /* ── Day tabs — refined minimal pills ─────────────────────────────────── */

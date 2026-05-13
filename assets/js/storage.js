@@ -89,7 +89,11 @@ export function saveSettings(patch) {
   return next;
 }
 
-// ── Client ID (user-provided) ─────────────────────────────────────────────
+// ── Client ID (baked default + localStorage override) ────────────────────
 
-export function getClientId() { return lsGet(APP.lsKey.clientId, ''); }
+import { BAKED_CLIENT_ID } from './config.js';
+
+export function getClientId() {
+  return lsGet(APP.lsKey.clientId, '') || BAKED_CLIENT_ID;
+}
 export function setClientId(id) { lsSet(APP.lsKey.clientId, String(id || '').trim()); }
