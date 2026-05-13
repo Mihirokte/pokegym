@@ -85,9 +85,10 @@ export function getToken() {
 }
 
 function redirectUri() {
-  // GitHub Pages base path lives in <base> element OR the path part of location.
-  // We compute a value the Google console can accept verbatim.
-  return window.location.origin + window.location.pathname.replace(/[^/]*$/, '');
+  // Always ends with '/', matching what must be registered in Google Cloud.
+  const origin = window.location.origin;
+  const path = window.location.pathname.replace(/[^/]*$/, '');
+  return origin + (path.endsWith('/') ? path : path + '/');
 }
 
 export function signIn() {
@@ -99,13 +100,14 @@ export function signIn() {
   url.searchParams.set('redirect_uri', redirectUri());
   url.searchParams.set('response_type', 'token');
   url.searchParams.set('scope', SCOPES);
-  url.searchParams.set('include_granted_scopes', 'true');
   url.searchParams.set('prompt', 'select_account');
   // Lightweight CSRF defense — we won't strictly verify but the hash is
   // parsed in-document so XSS is the real attack surface.
   const nonce = Math.random().toString(36).slice(2);
   url.searchParams.set('state', nonce);
   sessionStorage.setItem('pokegym.oauthNonce', nonce);
+  // Helpful breadcrumb for debugging 400 errors — visible in DevTools.
+  console.info('[pokegym] OAuth redirect_uri:', redirectUri());
   window.location.href = url.toString();
 }
 
