@@ -16,11 +16,17 @@ import { toast } from './ui/toast.js';
 import * as Wake from './ui/wake.js';
 
 // ── Routing ───────────────────────────────────────────────────────────────
+const NAV_ICONS = {
+  session: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11"/><path d="M21 21l-1.5-1.5"/><path d="M3 3l1.5 1.5"/><rect x="6.5" y="3" width="3.5" height="7" rx="0.5" transform="rotate(-45 8.25 6.5)"/><rect x="14" y="14" width="3.5" height="7" rx="0.5" transform="rotate(-45 15.75 17.5)"/></svg>',
+  badges:  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/><path d="M8.2 14 7 22l5-3 5 3-1.2-8"/></svg>',
+  library: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/><path d="M9 6h7"/><path d="M9 10h5"/></svg>',
+};
+
 const ROUTES = {
-  '':         { label: 'Today',    render: renderSessions, icon: '🏋' },
-  session:    { label: 'Today',    render: renderSessions, icon: '🏋' },
-  badges:     { label: 'Badges',   render: renderBadges,   icon: '🏅' },
-  library:    { label: 'Library',  render: renderLibrary,  icon: '📚' },
+  '':         { label: 'Today',    render: renderSessions, icon: NAV_ICONS.session },
+  session:    { label: 'Today',    render: renderSessions, icon: NAV_ICONS.session },
+  badges:     { label: 'Badges',   render: renderBadges,   icon: NAV_ICONS.badges  },
+  library:    { label: 'Library',  render: renderLibrary,  icon: NAV_ICONS.library },
 };
 
 function currentRoute() {
@@ -53,14 +59,16 @@ function ensureShell() {
   const nav = el('nav', { class: 'bottomnav' });
   for (const [key, r] of Object.entries(ROUTES)) {
     if (key === '') continue;
-    nav.appendChild(el('a', {
+    const item = el('a', {
       href: `#${key}`,
       class: 'navitem',
       'data-route': key,
     },
-      el('span', { class: 'nav-ico' }, r.icon),
+      el('span', { class: 'nav-ico' }),
       el('span', { class: 'nav-label' }, r.label),
-    ));
+    );
+    item.querySelector('.nav-ico').innerHTML = r.icon;
+    nav.appendChild(item);
   }
 
   root.append(top, main, nav);
