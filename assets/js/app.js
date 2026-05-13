@@ -9,9 +9,7 @@ import { isDemo, exitDemo } from './demo.js';
 
 import { renderSetup } from './ui/setup.js';
 import { renderSessions } from './ui/session.js';
-import { renderTeam } from './ui/team.js';
 import { renderBadges, evaluateBadges } from './ui/badges.js';
-import { renderPokedex } from './ui/pokedex.js';
 import { renderLibrary } from './ui/library.js';
 import { mountTimer } from './ui/timer.js';
 import { toast } from './ui/toast.js';
@@ -21,9 +19,7 @@ import * as Wake from './ui/wake.js';
 const ROUTES = {
   '':         { label: 'Today',    render: renderSessions, icon: '🏋' },
   session:    { label: 'Today',    render: renderSessions, icon: '🏋' },
-  team:       { label: 'Team',     render: renderTeam,     icon: '👥' },
   badges:     { label: 'Badges',   render: renderBadges,   icon: '🏅' },
-  dex:        { label: 'Pokédex',  render: renderPokedex,  icon: '📒' },
   library:    { label: 'Library',  render: renderLibrary,  icon: '📚' },
 };
 

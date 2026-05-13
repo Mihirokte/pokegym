@@ -17,12 +17,14 @@
   <meta name="apple-mobile-web-app-title" content="PokéGym" />
   <meta name="mobile-web-app-capable" content="yes" />
 
-  <!-- Fonts: system sans body, Dogica pixel for headings -->
+  <!-- Fonts: Inter for UI, Press Start 2P for pixel accents, JetBrains Mono for tabular numbers -->
   <style>
-    @font-face { font-family: 'Dogica'; src: url('assets/fonts/dogica.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-    @font-face { font-family: 'Dogica'; src: url('assets/fonts/dogicabold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('assets/fonts/inter.woff2') format('woff2-variations'); font-weight: 100 900; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Press Start 2P'; src: url('assets/fonts/press-start-2p.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'JetBrains Mono'; src: url('assets/fonts/jetbrains-mono.woff2') format('woff2-variations'); font-weight: 100 800; font-style: normal; font-display: swap; }
   </style>
 
+  <link rel="preload" as="font" type="font/woff2" href="assets/fonts/inter.woff2" crossorigin="anonymous" />
   <link rel="stylesheet" href="assets/css/app.css" />
 
   <!-- Preload key sprites used on first paint -->

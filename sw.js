@@ -7,7 +7,7 @@
 //     runtime caching is snappy.
 //   - Google APIs / accounts.google.com — never cache (always go to network).
 
-const VERSION = 'pokegym-v2';
+const VERSION = 'pokegym-v3';
 const SHELL = [
   './',
   'index.html',
@@ -28,15 +28,14 @@ const SHELL = [
   'assets/js/ui/badges.js',
   'assets/js/ui/library.js',
   'assets/js/ui/pokeball.js',
-  'assets/js/ui/pokedex.js',
   'assets/js/ui/session.js',
   'assets/js/ui/setup.js',
-  'assets/js/ui/team.js',
   'assets/js/ui/timer.js',
   'assets/js/ui/toast.js',
   'assets/js/ui/wake.js',
-  'assets/fonts/dogica.ttf',
-  'assets/fonts/dogicabold.ttf',
+  'assets/fonts/inter.woff2',
+  'assets/fonts/press-start-2p.woff2',
+  'assets/fonts/jetbrains-mono.woff2',
   'assets/icons/icon-192.png',
   'assets/icons/icon-512.png',
   'assets/icons/apple-touch-icon.png',

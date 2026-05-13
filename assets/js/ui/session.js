@@ -85,17 +85,48 @@ function renderHeader(day) {
   const mon = team.line[stage];
   const isShiny = teamRow?.isShiny === 'true';
   const level = Number(teamRow?.level || 1);
+  const xp = Number(teamRow?.xp || 0);
+  const xpNeeded = XP.levelTable[Math.min(level, XP.levelTable.length - 1)] || 100;
+  const xpPct = Math.min(100, Math.round((xp / xpNeeded) * 100));
 
   const head = el('header', { class: 'session-head', style: { '--c': day.color, '--a': day.accent } },
     el('div', { class: 'head-left' },
-      el('div', { class: 'tag', style: { color: day.color } }, day.tag),
+      el('span', { class: 'tag' }, day.tag),
       el('h1', { class: 'focus' }, day.focus),
-      el('div', { class: 'sub' }, `${day.label} · Tap exercises to check off, hold to log sets.`),
+      el('div', { class: 'sub' }, `${day.label} · ${day.rest ? 'Rest + recover' : 'Tap sets to log'}`),
     ),
     el('div', { class: 'head-right' },
-      el('img', { class: 'mon-sprite', src: spritePath(mon.slug, { shiny: isShiny }), alt: mon.name }),
-      el('div', { class: 'mon-name' }, mon.name, isShiny ? ' ★' : ''),
+      el('img', {
+        class: 'mon-sprite',
+        src: spritePath(mon.slug, { shiny: isShiny }),
+        alt: mon.name,
+        onerror: (e) => { e.target.src = spritePath('unknown'); },
+      }),
+      el('div', { class: 'mon-name' }, (isShiny ? '★ ' : '') + mon.name),
       el('div', { class: 'mon-level' }, `Lv. ${level}`),
+    ),
+    // Inline XP bar + evolution strip — replaces the deleted Team page.
+    !day.rest && el('div', { class: 'head-xp' },
+      el('div', { class: 'head-xp-label' }, 'XP'),
+      el('div', { class: 'head-xp-track' },
+        el('div', { class: 'head-xp-fill', style: { width: `${xpPct}%` } }),
+      ),
+      el('div', { class: 'head-xp-num' }, `${xp}/${xpNeeded}`),
+    ),
+    !day.rest && el('div', { class: 'head-stages' },
+      ...team.line.flatMap((m, i) => {
+        const sprite = el('img', {
+          class: `head-stage-sprite ${i === stage ? 'active' : ''} ${i < stage ? 'past' : ''}`,
+          src: spritePath(m.slug),
+          alt: m.name,
+          title: m.name,
+          onerror: (e) => { e.target.src = spritePath('unknown'); },
+        });
+        return i < team.line.length - 1
+          ? [sprite, el('span', { class: 'head-stage-arrow' }, '›')]
+          : [sprite];
+      }),
+      el('div', { class: 'head-stage-blurb' }, team.blurb),
     ),
   );
   return head;

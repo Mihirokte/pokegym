@@ -110,13 +110,11 @@ pokegym/
 │   │   │   ├── leaders.js       # gym leaders + Elite Four + Champion
 │   │   │   └── pokemon.js       # team mons per day, evolution lines
 │   │   └── ui/
-│   │       ├── session.js       # today's workout view
+│   │       ├── session.js       # today's workout view with inline team/XP
 │   │       ├── pokeball.js      # random-exercise modal
-│   │       ├── team.js          # team dashboard
-│   │       ├── badges.js        # badge progression
-│   │       ├── pokedex.js       # caught list
+│   │       ├── badges.js        # badge progression + recent catches strip
 │   │       ├── library.js       # all-exercises browser + add form
-│   │       ├── setup.js         # first-run OAuth setup
+│   │       ├── setup.js         # first-run OAuth setup + demo toggle
 │   │       ├── timer.js         # rest timer with vibration
 │   │       ├── wake.js          # screen wake lock
 │   │       └── toast.js
@@ -132,7 +130,7 @@ pokegym/
 ## Credits
 
 - **Pokésprite** icons: [msikma/pokesprite](https://github.com/msikma/pokesprite) — Pokémon box-icon sprites (MIT for the collection; individual sprites © Nintendo / Game Freak / The Pokémon Company, used here for non-commercial fan purposes)
-- **Dogica** pixel font: © Roberto Mocci (CC-BY-SA)
+- **Inter** (Rasmus Andersson, OFL), **Press Start 2P** (CodeMan38, OFL), **JetBrains Mono** (JetBrains, OFL) — all self-hosted from Fontsource
 - **Sheets integration pattern** adapted from [pokecity](https://github.com/Mihirokte/pokecity)
 
 Pokémon, Pokémon character names, and Pokéball are trademarks of Nintendo / Game Freak / The Pokémon Company. This is an unofficial fan project. Not affiliated with or endorsed by any of the above.
