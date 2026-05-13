@@ -60,21 +60,6 @@ load();
 // ── Public API ────────────────────────────────────────────────────────────
 
 export function getAuth() {
-  // Demo mode short-circuits: pretend we're fully signed in with a local profile.
-  // Kept inline rather than importing demo.js to avoid a circular dep.
-  const demoOn = (() => { try { return JSON.parse(localStorage.getItem('pokegym.demo') || 'false') === true; } catch { return false; } })();
-  if (demoOn) {
-    return {
-      user: { email: 'demo@pokegym', name: 'Demo Trainer', picture: '', given_name: 'Demo' },
-      accessToken: 'demo',
-      tokenExpiresAt: Date.now() + 3600_000,
-      spreadsheetId: 'demo',
-      sheetGids: {},
-      isSignedIn: true,
-      hasClientId: true,
-      isDemo: true,
-    };
-  }
   return {
     user: state.user,
     accessToken: state.accessToken,
@@ -83,7 +68,6 @@ export function getAuth() {
     sheetGids: state.sheetGids,
     isSignedIn: !!state.accessToken && Date.now() < state.tokenExpiresAt,
     hasClientId: !!getClientId(),
-    isDemo: false,
   };
 }
 

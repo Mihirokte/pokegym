@@ -1,47 +1,41 @@
-// Setup / onboarding. First launch (or after "reset config") asks the user
-// for their Google OAuth Client ID and explains how to get one.
+// First-run setup. Collects the user's Google OAuth Client ID, then kicks
+// off the OAuth redirect. Once signed in, the spreadsheet auto-creates.
 
 import { el, haptic } from '../util.js';
 import { getClientId, setClientId } from '../storage.js';
 import { signIn } from '../auth.js';
-import { enterDemo } from '../demo.js';
 
 export function renderSetup(root) {
   root.innerHTML = '';
+  const origin = window.location.origin;
+  const redirect = window.location.origin + window.location.pathname;
+
   const card = el('div', { class: 'setup-card' },
     el('img', { class: 'setup-logo', src: 'assets/sprites/items/poke.png', alt: '' }),
     el('h1', { class: 'setup-title' }, 'PokéGym'),
-    el('p', { class: 'setup-sub' }, 'Track your gym sessions. Evolve your team. Earn badges.'),
-
-    el('div', { class: 'demo-block' },
-      el('button', { class: 'demo-btn', type: 'button', onClick: tryDemo },
-        el('span', { class: 'demo-label' }, '▶  Try the demo'),
-        el('span', { class: 'demo-hint' }, 'Full UI · sample data · no account needed'),
-      ),
-      el('div', { class: 'demo-divider' }, el('span', {}, 'or set up for real')),
-    ),
+    el('p', { class: 'setup-sub' }, 'Connect Google to begin. Your spreadsheet lives in your Drive.'),
 
     el('div', { class: 'setup-steps' },
-      stepItem(1, 'Create a Google Cloud OAuth Client', [
-        'Go to ',
+      step(1, 'OAuth Client', [
+        'In ',
         link('console.cloud.google.com/apis/credentials'),
-        ', create (or pick) a project, click Create Credentials → OAuth client ID → Web application.',
+        ', open your Web OAuth Client (or create one).',
       ]),
-      stepItem(2, 'Enable Google Sheets + Drive APIs', [
-        'In the APIs & Services library, enable both ',
+      step(2, 'Enable APIs', [
+        'Enable ',
         el('code', {}, 'Google Sheets API'),
         ' and ',
         el('code', {}, 'Google Drive API'),
-        '.',
+        ' in the API library.',
       ]),
-      stepItem(3, 'Authorize this site', [
+      step(3, 'Authorize this URL', [
         'Add ',
-        el('code', {}, window.location.origin),
-        ' to Authorized JavaScript origins, and ',
-        el('code', {}, window.location.origin + window.location.pathname),
-        ' to Authorized redirect URIs.',
+        el('code', {}, origin),
+        ' to JavaScript origins and ',
+        el('code', {}, redirect),
+        ' to redirect URIs.',
       ]),
-      stepItem(4, 'Paste the Client ID below', []),
+      step(4, 'Paste your Client ID', []),
     ),
 
     el('div', { class: 'setup-input' },
@@ -50,21 +44,24 @@ export function renderSetup(root) {
         type: 'text',
         placeholder: 'xxxxxxxxxxxx-xxxxxxx.apps.googleusercontent.com',
         autocomplete: 'off',
+        autocapitalize: 'off',
+        autocorrect: 'off',
+        spellcheck: false,
         value: getClientId() || '',
       }),
-      el('button', { class: 'primary', type: 'button', onClick: saveAndSignIn }, 'Save & Sign In'),
+      el('button', { class: 'primary', type: 'button', onClick: saveAndSignIn }, 'Sign in'),
     ),
 
     el('div', { class: 'setup-note' },
-      'The client ID is a public identifier — safe to save in the browser. Full guide: ',
-      el('a', { href: 'SETUP.md', target: '_blank' }, 'SETUP.md'),
+      'The client ID is a public identifier — safe to save in your browser. ',
+      el('a', { href: 'https://github.com/Mihirokte/pokegym/blob/main/SETUP.md', target: '_blank', rel: 'noopener' }, 'Full setup guide'),
       '.',
     ),
   );
   root.appendChild(card);
 }
 
-function stepItem(n, title, content) {
+function step(n, title, content) {
   return el('div', { class: 'setup-step' },
     el('div', { class: 'step-num' }, n),
     el('div', { class: 'step-body' },
@@ -82,7 +79,7 @@ function link(url) {
 function saveAndSignIn() {
   const input = document.getElementById('client-id-input');
   const value = (input?.value || '').trim();
-  if (!value) {
+  if (!value.endsWith('.apps.googleusercontent.com')) {
     input?.focus();
     input?.classList.add('error');
     setTimeout(() => input?.classList.remove('error'), 1200);
@@ -90,16 +87,5 @@ function saveAndSignIn() {
   }
   setClientId(value);
   haptic(20);
-  try { signIn(); } catch (e) {
-    console.error(e);
-  }
-}
-
-function tryDemo() {
-  haptic([10, 30, 10]);
-  enterDemo();
-  // Kick a render — app.js listens on auth changes, not a custom event. Easiest
-  // is a hard reload so the mirror + routes re-initialise cleanly.
-  location.hash = '#session';
-  location.reload();
+  try { signIn(); } catch (e) { console.error(e); }
 }

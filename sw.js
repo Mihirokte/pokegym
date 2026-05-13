@@ -7,7 +7,7 @@
 //     runtime caching is snappy.
 //   - Google APIs / accounts.google.com — never cache (always go to network).
 
-const VERSION = 'pokegym-v4';
+const VERSION = 'pokegym-v5';
 const SHELL = [
   './',
   'index.html',
@@ -16,7 +16,6 @@ const SHELL = [
   'assets/js/app.js',
   'assets/js/auth.js',
   'assets/js/config.js',
-  'assets/js/demo.js',
   'assets/js/sheets.js',
   'assets/js/storage.js',
   'assets/js/sync.js',
