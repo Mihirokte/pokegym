@@ -154,3 +154,33 @@ export function pct(done, total) {
   if (!total) return 0;
   return Math.round((done / total) * 100);
 }
+
+// ── Session-time estimate ──────────────────────────────────────────────────
+// Rough heuristics (fine for a status badge, not for actual coaching):
+//   • Strength set     : 30s working + 90s rest  → 2.0 min/set
+//   • Cardio set       : `defaultReps` seconds work + 60s rest, or 0.5 min/set
+//                        for distance-based rows. Capped at 3 min/set.
+//   • Mobility/Iso set : 45s work + 15s rest    → 1.0 min/set
+//   • Warmup item      : 1.5 min (mostly transitions)
+//   • Cooldown item    : 1 min (1 round, hold + breathe)
+// Returns whole minutes, rounded.
+export function estimateExerciseMinutes(ex) {
+  if (!ex) return 0;
+  const sets = Number(ex.defaultSets || 1);
+  if (ex.section === 'cooldown') return 1 * sets;
+  if (ex.section === 'warmup')   return 1.5;
+  // workout
+  if (ex.type === 'cardio') {
+    if (ex.isTime) {
+      const sec = parseInt(String(ex.defaultReps), 10) || 30;
+      return Math.min(3, (sec + 60) / 60) * sets;
+    }
+    return 1.5 * sets; // e.g. 500m row
+  }
+  if (ex.type === 'isometric') return (parseInt(String(ex.defaultReps), 10) / 60 + 1) * sets;
+  return 2.0 * sets; // strength default
+}
+
+export function estimateSectionMinutes(exercises) {
+  return exercises.reduce((acc, ex) => acc + estimateExerciseMinutes(ex), 0);
+}

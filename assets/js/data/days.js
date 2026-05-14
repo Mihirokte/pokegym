@@ -41,7 +41,7 @@ export const DAYS = [
     accent: '#E0BE89',
     team: 'electric',
     warmup: ['wm-row-erg', 'wm-hip-opener', 'wm-shoulder-cars'],
-    workout: ['cond-thruster', 'cond-kb-swing', 'cond-box-jump', 'cond-battle-rope', 'cond-sled-push', 'cond-row-interval'],
+    workout: ['cond-thruster', 'cond-kb-swing', 'cond-treadmill', 'cond-elliptical', 'cond-row-interval'],
     cooldown: ['cd-breath', 'cd-supine-twist', 'cd-child-pose'],
   },
   {

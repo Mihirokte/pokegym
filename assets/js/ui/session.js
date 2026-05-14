@@ -2,7 +2,7 @@
 // three sections (warmup / workout / cooldown). Each exercise card lets you
 // log weight+reps per set with a tap to check off, and opens the rest timer.
 
-import { el, mount, haptic, todayISO, nowISO, uid, pct, dayIndexFromDate } from '../util.js';
+import { el, mount, haptic, todayISO, nowISO, uid, pct, dayIndexFromDate, estimateSectionMinutes } from '../util.js';
 import { DAYS, dayByKey, dayByIndex, sectionsOf } from '../data/days.js';
 import { getExercise } from '../data/exercises.js';
 import { TEAMS, teamMemberFromState, teamForDay } from '../data/pokemon.js';
@@ -93,7 +93,11 @@ function renderHeader(day) {
     el('div', { class: 'head-left' },
       el('span', { class: 'tag' }, day.tag),
       el('h1', { class: 'focus' }, day.focus),
-      el('div', { class: 'sub' }, `${day.label} · ${day.rest ? 'Rest + recover' : 'Tap sets to log'}`),
+      el('div', { class: 'sub' },
+        el('span', {}, day.label),
+        !day.rest && el('span', { class: 'sub-sep' }, '·'),
+        !day.rest && el('span', { class: 'sub-est' }, `≈ ${estimateForDay(day)} min`),
+      ),
     ),
     el('div', { class: 'head-right' },
       el('div', { class: 'mon-frame' },
@@ -505,3 +509,13 @@ function maybeAwardBadge() {
 
 // Expose for debugging
 if (typeof window !== 'undefined') window.__pokegymSession = { readDraft, writeDraft };
+
+// ── Time estimate ─────────────────────────────────────────────────────────
+function estimateForDay(day) {
+  if (day.rest) return 0;
+  const custom = Object.fromEntries(mirrorSheet('CustomExercises').map(x => [x.id, x]));
+  const all = sectionsOf(day).flatMap(sec =>
+    sec.ids.map(id => ({ ...getExercise(id, custom), section: sec.key }))
+  );
+  return Math.round(estimateSectionMinutes(all));
+}
