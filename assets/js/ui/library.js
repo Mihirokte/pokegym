@@ -5,10 +5,15 @@ import { el, nowISO, uid } from '../util.js';
 import { appendRow, removeRow } from '../sync.js';
 import { mirrorSheet } from '../storage.js';
 import { allExercises, EXERCISES } from '../data/exercises.js';
+import { DAYS } from '../data/days.js';
 import { toast } from './toast.js';
 
 const SECTIONS = ['warmup', 'workout', 'cooldown'];
 const TYPES = ['strength', 'cardio', 'mobility', 'isometric'];
+const DAY_OPTIONS = [
+  { value: '', label: 'Library only' },
+  ...DAYS.map(d => ({ value: d.key, label: d.label })),
+];
 
 export function renderLibrary(root) {
   root.innerHTML = '';
@@ -57,18 +62,25 @@ function renderAddForm() {
       isTime: data.isTime === 'on' ? 'true' : 'false',
       cue: data.cue || '',
       addedAt: nowISO(),
+      dayKey: data.dayKey || '',
     };
     appendRow('CustomExercises', row);
-    toast(`Added "${row.name}"`, 'ok');
+    const where = row.dayKey
+      ? `${DAYS.find(d => d.key === row.dayKey)?.label || row.dayKey}'s ${row.section}`
+      : 'Library';
+    toast(`Added "${row.name}" → ${where}`, 'ok');
     e.currentTarget.reset();
     setTimeout(() => renderLibrary(document.querySelector('.page.active')), 120);
   } });
 
   form.appendChild(el('div', { class: 'form-title' }, '+ Add exercise'));
   form.appendChild(row(
-    input('name', 'Name', { required: true }),
-    select('section', 'Section', SECTIONS),
-    select('type', 'Type', TYPES),
+    input('name', 'Name', { required: true, full: true }),
+  ));
+  form.appendChild(row(
+    select('dayKey', 'Add to day', DAY_OPTIONS),
+    select('section', 'Section', SECTIONS.map(s => ({ value: s, label: s }))),
+    select('type', 'Type', TYPES.map(t => ({ value: t, label: t }))),
   ));
   form.appendChild(row(
     input('muscle', 'Muscle group'),
@@ -89,9 +101,15 @@ function renderAddForm() {
 
 function renderRow(ex, customMap) {
   const isCustom = !!customMap[ex.id];
+  const dayKey = isCustom ? customMap[ex.id].dayKey : '';
+  const dayLabel = dayKey ? (DAYS.find(d => d.key === dayKey)?.short || '') : '';
   return el('div', { class: `lib-row ${isCustom ? 'custom' : ''}` },
     el('div', { class: 'lib-main' },
-      el('div', { class: 'lib-name' }, ex.name, isCustom ? el('span', { class: 'lib-badge' }, 'CUSTOM') : null),
+      el('div', { class: 'lib-name' },
+        ex.name,
+        isCustom ? el('span', { class: 'lib-badge' }, 'CUSTOM') : null,
+        dayLabel ? el('span', { class: 'lib-day' }, dayLabel) : null,
+      ),
       el('div', { class: 'lib-sub' }, [ex.section, ex.muscle, ex.equipment, ex.type].filter(Boolean).join(' · ')),
       ex.cue && el('div', { class: 'lib-cue' }, ex.cue),
     ),
@@ -121,7 +139,7 @@ function select(name, label, options) {
   return el('label', { class: 'form-field' },
     el('span', { class: 'form-label' }, label),
     el('select', { name },
-      ...options.map(o => el('option', { value: o }, o)),
+      ...options.map(o => el('option', { value: o.value }, o.label)),
     ),
   );
 }

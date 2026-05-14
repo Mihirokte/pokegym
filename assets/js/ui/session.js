@@ -167,9 +167,13 @@ function renderSessionBody(day) {
 }
 
 function renderSection(day, section, draft) {
-  const custom = Object.fromEntries(mirrorSheet('CustomExercises').map(x => [x.id, x]));
+  const customAll = mirrorSheet('CustomExercises');
+  const customMap = Object.fromEntries(customAll.map(x => [x.id, x]));
   const list = el('div', { class: 'ex-list' });
-  const exercises = section.ids.map(id => getExercise(id, custom));
+  // Default plan + any custom exercises tagged to this day+section.
+  const builtIns = section.ids.map(id => getExercise(id, customMap));
+  const extras = customAll.filter(c => c.dayKey === day.key && c.section === section.key);
+  const exercises = [...builtIns, ...extras];
 
   for (const ex of exercises) list.appendChild(renderExerciseCard(day, section, ex, draft));
 
@@ -513,9 +517,11 @@ if (typeof window !== 'undefined') window.__pokegymSession = { readDraft, writeD
 // ── Time estimate ─────────────────────────────────────────────────────────
 function estimateForDay(day) {
   if (day.rest) return 0;
-  const custom = Object.fromEntries(mirrorSheet('CustomExercises').map(x => [x.id, x]));
-  const all = sectionsOf(day).flatMap(sec =>
-    sec.ids.map(id => ({ ...getExercise(id, custom), section: sec.key }))
+  const customAll = mirrorSheet('CustomExercises');
+  const customMap = Object.fromEntries(customAll.map(x => [x.id, x]));
+  const builtIns = sectionsOf(day).flatMap(sec =>
+    sec.ids.map(id => ({ ...getExercise(id, customMap), section: sec.key }))
   );
-  return Math.round(estimateSectionMinutes(all));
+  const extras = customAll.filter(c => c.dayKey === day.key);
+  return Math.round(estimateSectionMinutes([...builtIns, ...extras]));
 }

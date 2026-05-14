@@ -148,6 +148,7 @@ export const SHEET_HEADERS = {
     'trackLoad',      // 'true' | 'false'
     'cue',
     'addedAt',
+    'dayKey',         // '' = library only, otherwise 'mon'|'tue'|...|'sun'
   ],
   Meta: [
     'key',
