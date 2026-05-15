@@ -4,7 +4,7 @@
 // `slug` matches the pokesprite filename under assets/sprites/pokemon/.
 
 export const TEAMS = {
-  // Monday — Upper Push. Brawler line.
+  // Monday — Push A (chest focus). Brawler line.
   fighter: {
     name: 'Fighter',
     type: 'fighting',
@@ -13,10 +13,22 @@ export const TEAMS = {
       { slug: 'machoke',  name: 'Machoke',  stage: 1 },
       { slug: 'machamp',  name: 'Machamp',  stage: 2 },
     ],
-    blurb: 'All biceps, no small-talk. Evolves via consistent pressing work.',
+    blurb: 'All chest, no small-talk. Evolves via consistent pressing work.',
   },
 
-  // Tuesday — Lower. Ground-type powerhouse.
+  // Tuesday — Pull A (width focus). Boxer line built on the row.
+  grappler: {
+    name: 'Grappler',
+    type: 'fighting',
+    line: [
+      { slug: 'tyrogue',     name: 'Tyrogue',     stage: 0 },
+      { slug: 'hitmonchan',  name: 'Hitmonchan',  stage: 1 },
+      { slug: 'hitmonchan',  name: 'Hitmonchan+', stage: 2 }, // no stage 2 — rename at 25
+    ],
+    blurb: 'Tyrogue picks its final form based on how you train. We chose the puller.',
+  },
+
+  // Wednesday — Legs A (quad focus). Ground-type powerhouse.
   rock: {
     name: 'Ground',
     type: 'ground',
@@ -28,7 +40,7 @@ export const TEAMS = {
     blurb: 'Every set of squats moves the earth a little.',
   },
 
-  // Wednesday — Conditioning. Electric-type.
+  // Thursday — Push B (shoulder focus). Electric-type.
   electric: {
     name: 'Electric',
     type: 'electric',
@@ -37,22 +49,22 @@ export const TEAMS = {
       { slug: 'electabuzz',  name: 'Electabuzz',  stage: 1 },
       { slug: 'electivire',  name: 'Electivire',  stage: 2 },
     ],
-    blurb: 'Conditioning turns the lights on. Literally voltage-rated.',
+    blurb: 'Overhead press lights the bulb. Literally voltage-rated.',
   },
 
-  // Thursday — Upper Pull. Fighting/Boxer line.
-  grappler: {
-    name: 'Grappler',
-    type: 'fighting',
+  // Friday — Pull B (thickness focus). Dragon pseudo-legendary.
+  dragon: {
+    name: 'Dragon',
+    type: 'dragon',
     line: [
-      { slug: 'tyrogue',     name: 'Tyrogue',     stage: 0 },
-      { slug: 'hitmonchan',  name: 'Hitmonchan',  stage: 1 },
-      { slug: 'hitmonchan',  name: 'Hitmonchan+', stage: 2 }, // no stage 2 — rename at 25
+      { slug: 'dratini',    name: 'Dratini',    stage: 0 },
+      { slug: 'dragonair',  name: 'Dragonair',  stage: 1 },
+      { slug: 'dragonite',  name: 'Dragonite',  stage: 2 },
     ],
-    blurb: 'Tyrogue picks its final form based on how you train. We chose the rower.',
+    blurb: 'Long line, long lats. Rows build the dragon back.',
   },
 
-  // Friday — Glutes. Aura line.
+  // Saturday — Legs B (glute focus). Aura line.
   aura: {
     name: 'Aura',
     type: 'steel',
@@ -62,18 +74,6 @@ export const TEAMS = {
       { slug: 'lucario',   name: 'Lucario★',  stage: 2 }, // mega-coded, still Lucario sprite
     ],
     blurb: 'Lucario reads your aura. Skipping glute day is felt across the mat.',
-  },
-
-  // Saturday — Full Body. Dragon pseudo-legendary.
-  dragon: {
-    name: 'Dragon',
-    type: 'dragon',
-    line: [
-      { slug: 'dratini',    name: 'Dratini',    stage: 0 },
-      { slug: 'dragonair',  name: 'Dragonair',  stage: 1 },
-      { slug: 'dragonite',  name: 'Dragonite',  stage: 2 },
-    ],
-    blurb: 'The longest-grind line. Saturday sessions get you there.',
   },
 
   // Sunday — Rest. Healer.
@@ -116,12 +116,12 @@ export function initialTeamState() {
   const out = [];
   for (const [teamKey, team] of Object.entries(TEAMS)) {
     const dayKey = {
-      fighter:  'mon',
-      rock:     'tue',
-      electric: 'wed',
-      grappler: 'thu',
-      aura:     'fri',
-      dragon:   'sat',
+      fighter:  'mon',  // Push A
+      grappler: 'tue',  // Pull A
+      rock:     'wed',  // Legs A
+      electric: 'thu',  // Push B
+      dragon:   'fri',  // Pull B
+      aura:     'sat',  // Legs B
       rest:     'sun',
     }[teamKey];
     out.push({
@@ -141,8 +141,8 @@ export function initialTeamState() {
 
 export function teamForDay(dayKey) {
   const map = {
-    mon: 'fighter', tue: 'rock', wed: 'electric', thu: 'grappler',
-    fri: 'aura', sat: 'dragon', sun: 'rest',
+    mon: 'fighter', tue: 'grappler', wed: 'rock', thu: 'electric',
+    fri: 'dragon', sat: 'aura', sun: 'rest',
   };
   return TEAMS[map[dayKey]];
 }

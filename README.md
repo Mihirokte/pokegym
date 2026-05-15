@@ -8,9 +8,9 @@ A Pokémon-themed gym tracker PWA. Train consistently → evolve your team → e
 
 ## What it is
 
-- **6-day recomp split** — Upper Push / Lower / Conditioning / Upper Pull / Glutes / Full-body — with a Sunday rest day
+- **Push / Pull / Legs split (PPL x2)** — Push A · Pull A · Legs A · Push B · Pull B · Legs B, with a Sunday rest day. Each day umbrella-covers its movement pattern with one compound per muscle plus complementary accessories — no within-day overlap
 - **Set-by-set logging** — weight + reps per set, rest timer with vibration
-- **Your team evolves** — each day of the week has its own Pokémon (Machop, Rhyhorn, Elekid, Tyrogue, Riolu, Dratini, Chansey). Hit your sections to earn XP, level up, and evolve
+- **Your team evolves** — each day of the week has its own Pokémon (Machop, Tyrogue, Rhyhorn, Elekid, Dratini, Riolu, Chansey). Hit your sections to earn XP, level up, and evolve
 - **Gym badges** — 6 workouts in a week = next Kanto badge. 8 badges → Elite Four → Champion
 - **Pokéball RNG** — tap the ball mid-session, catch a random wild exercise (50+ in the pool). Classic 1/256 shiny odds (128 with streak bonus)
 - **Offline-first PWA** — installable on iOS and Android. Service worker caches shell + sprites. Writes queue when offline, sync on reconnect
@@ -105,7 +105,7 @@ pokegym/
 │   │   ├── sync.js              # write queue, flush, bootstrap
 │   │   ├── util.js              # helpers (ids, dom, retry, random…)
 │   │   ├── data/
-│   │   │   ├── days.js          # 6-day split
+│   │   │   ├── days.js          # PPL split (push/pull/legs x2 + rest)
 │   │   │   ├── exercises.js     # master exercise library
 │   │   │   ├── leaders.js       # gym leaders + Elite Four + Champion
 │   │   │   └── pokemon.js       # team mons per day, evolution lines
